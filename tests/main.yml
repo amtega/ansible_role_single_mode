@@ -12,6 +12,28 @@
   tags:
     - sandbox
 
+# - name: Prepare containers for idempotence test
+#   hosts: docker_sandbox_containers
+#   tasks:
+#     - name: prepare centos7 to test idempotence
+#       lineinfile:
+#         path: /usr/lib/systemd/system/rescue.service
+#         regexp: '^ExecStart'
+#         line: 'ExecStart=-/bin/sh -c "/usr/sbin/sushell; /usr/bin/systemctl --fail --no-block default"'
+#       when:
+#         - ansible_facts.distribution | lower in ["rhel", "centos"]
+#         - ansible_facts.distribution_major_version == '7'
+#
+#     - name: prepare fedora to test idempotence
+#       lineinfile:
+#         path: /usr/lib/systemd/system/rescue.service
+#         regexp: '^ExecStart'
+#         line: 'ExecStart=-/bin/sh -c "/usr/sbin/sushell; /usr/bin/systemctl --fail --no-block default"'
+#       when:
+#         - ansible_facts.distribution | lower in ["fedora"]
+#   tags:
+#     - sandbox
+
 - name: Run idempotence test
   hosts: localhost
   roles:
@@ -24,6 +46,33 @@
   hosts: docker_sandbox_containers
   roles:
       - role: amtega.single_mode
+  tasks:
+    - name: Check sushell is configured in RHEL and CentOS 6
+      shell: grep --fixed-strings sulogin "{{ item }}"
+      changed_when: no
+      loop:
+        - /etc/inittab
+        - /etc/sysconfig/init
+      when:
+        - ansible_facts.distribution | lower in ["rhel", "centos"]
+        - ansible_facts.distribution_major_version == '6'
+
+    - name: Check sushell is configured in RHEL and CentOS 7
+      shell: grep --fixed-strings sulogin "{{ item }}"
+      changed_when: no
+      loop:
+        - /usr/lib/systemd/system/rescue.service
+      when:
+        - ansible_facts.distribution | lower in ["rhel", "centos", "fedora"]
+        - ansible_facts.distribution_major_version > '6'
+
+    - name: Check sushell is configured in Fedora
+      shell: grep --fixed-strings sulogin "{{ item }}"
+      changed_when: no
+      loop:
+        - /usr/lib/systemd/system/rescue.service
+      when:
+        - ansible_facts.distribution | lower in ["fedora"]
   tags:
     - idempotence
 
