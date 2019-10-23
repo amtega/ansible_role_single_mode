@@ -15,7 +15,9 @@
         line: 'SINGLE=/sbin/sulogin'
   when:
     - ansible_facts.distribution | lower in ["rhel", "centos"]
-    - ansible_facts.distribution_major_version == '6'
+    - ansible_facts.distribution_major_version is version('6', '==')
+  tags:
+    - role::single_mode
 
 - block:
     - name: Ensure config require root password in single mode in centos 7
@@ -25,7 +27,9 @@
         line: 'ExecStart=-/bin/sh -c "/usr/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
   when:
     - ansible_facts.distribution | lower in ["rhel", "centos"]
-    - ansible_facts.distribution_major_version == '7'
+    - ansible_facts.distribution_major_version is version('7', '==')
+  tags:
+    - role::single_mode
 
 - block:
     - name: Ensure config require root password in single mode in fedora
@@ -35,3 +39,5 @@
         line: 'ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue'
   when:
     - ansible_facts.distribution | lower in ["fedora"]
+  tags:
+    - role::single_mode
