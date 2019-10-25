@@ -15,4 +15,4 @@
         regexp: '^SINGLE='
         line: 'SINGLE=/sbin/sulogin'
   tags:
-    - role::single_mode
+    - role::singlemode
