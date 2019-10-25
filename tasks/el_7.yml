@@ -7,4 +7,4 @@
     regexp: '^ExecStart'
     line: 'ExecStart=-/bin/sh -c "/usr/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
   tags:
-    - role::singlemode
+    - role::single_mode

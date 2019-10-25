@@ -7,4 +7,4 @@
     regexp: '^ExecStart'
     line: 'ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue'
   tags:
-    - role::singlemode
+    - role::single_mode
