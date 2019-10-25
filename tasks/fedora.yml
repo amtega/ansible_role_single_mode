@@ -1,0 +1,10 @@
+---
+# Role tasks for fedora
+
+- name: Setup config to require root password in single mode
+  lineinfile:
+    path: /usr/lib/systemd/system/rescue.service
+    regexp: '^ExecStart'
+    line: 'ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue'
+  tags:
+    - role::single_mode
