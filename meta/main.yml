@@ -1,12 +1,13 @@
+---
 # Role dependencies
 
 galaxy_info:
   role_name: single_mode
   author: José Enrique Mourón Regueira
-  description: Force system to prompt for password in Single User mode
+  description: Force system to prompt for password in single user mode
   company: AMTEGA - Xunta de Galicia
   license: GPLv3 or EUPL
-  min_ansible_version: 2.7
+  min_ansible_version: 2.8
   platforms:
     - name: EL
       versions:
@@ -22,10 +23,5 @@ galaxy_info:
 
 dependencies:
   - role: amtega.check_platform
-    vars:
-      check_platform_distributions:
-        centos: 6
-        rhel: 6
-        fedora: 29
     tags:
-      - role::single_mode
+      - never

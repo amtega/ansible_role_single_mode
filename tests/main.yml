@@ -1,5 +1,6 @@
 ---
 # Tasks for testing role
+
 - name: Configure docker sandbox environment
   hosts: localhost
   roles:
@@ -12,35 +13,46 @@
   tags:
     - sandbox
 
-# - name: Prepare containers for idempotence test
-#   hosts: docker_sandbox_containers
-#   tasks:
-#     - name: prepare centos7 to test idempotence
-#       lineinfile:
-#         path: /usr/lib/systemd/system/rescue.service
-#         regexp: '^ExecStart'
-#         line: 'ExecStart=-/bin/sh -c "/usr/sbin/sushell; /usr/bin/systemctl --fail --no-block default"'
-#       when:
-#         - ansible_facts.distribution | lower in ["rhel", "centos"]
-#         - ansible_facts.distribution_major_version == '7'
-#
-#     - name: prepare fedora to test idempotence
-#       lineinfile:
-#         path: /usr/lib/systemd/system/rescue.service
-#         regexp: '^ExecStart'
-#         line: 'ExecStart=-/bin/sh -c "/usr/sbin/sushell; /usr/bin/systemctl --fail --no-block default"'
-#       when:
-#         - ansible_facts.distribution | lower in ["fedora"]
-#   tags:
-#     - sandbox
+- name: Start docker containers
+  hosts: localhost
+  roles:
+    - role: amtega.docker_sandbox
+      vars:
+        docker_sandbox_state: started
+        docker_sandbox_idempotence_test: no
+  tags:
+    - sandbox
+
+- name: Prepare docker containers for idempotence test
+  hosts: docker_sandbox_containers
+  tasks:
+    - name: Prepare RHEL and CentOS 7 containers
+      lineinfile:
+        path: /usr/lib/systemd/system/rescue.service
+        regexp: '^ExecStart'
+        line: 'ExecStart=-/bin/sh -c "/usr/sbin/sushell; /usr/bin/systemctl --fail --no-block default"'
+      when:
+        - ansible_facts.distribution | lower in ["rhel", "centos"]
+        - ansible_facts.distribution_major_version == '7'
+
+    - name: Prepare fedoraless  containers
+      lineinfile:
+        path: /usr/lib/systemd/system/rescue.service
+        regexp: '^ExecStart'
+        line: 'ExecStart=-/bin/sh -c "/usr/sbin/sushell; /usr/bin/systemctl --fail --no-block default"'
+      when:
+        - ansible_facts.distribution | lower in ["fedora"]
+  tags:
+    - prepare
+    - sandbox
 
 - name: Run idempotence test
   hosts: localhost
   roles:
-    - role: amtega.docker_sandbox
-      docker_sandbox_state: started
-  tags:
-    - sandbox
+    - role: amtega.idempotence_tester
+      vars:
+        idempotence_tester_inventory: "{{ docker_sandbox_inventory }}"
+        idempotence_tester_group: docker_sandbox_containers
 
 - name: Test apache_reverse_proxy role
   hosts: docker_sandbox_containers
@@ -54,7 +66,7 @@
         - /etc/inittab
         - /etc/sysconfig/init
       when:
-        - ansible_facts.distribution | lower in ["rhel", "centos"]
+        - ansible_facts.distribution | lower in ["centos", "redhat"]
         - ansible_facts.distribution_major_version is version('6', '==')
 
     - name: Check sushell is configured in RHEL and CentOS 7
@@ -65,7 +77,6 @@
       when:
         - ansible_facts.distribution | lower in ["rhel", "centos", "fedora"]
         - ansible_facts.distribution_major_version is version('7', '>=')
-
   tags:
     - idempotence
 

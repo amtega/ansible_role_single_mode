@@ -1,14 +1,6 @@
 # Ansible amtega.single_mode role
 
-This is an [Ansible](http://www.ansible.com) role which ensure single mode init is protectesd by root password.
-
-## Requirements
-
-[Ansible 2.7+](http://docs.ansible.com/ansible/latest/intro_installation.html)
-
-## Dependencies
-
-- [amtega.check_platform](https://galaxy.ansible.com/amtega/check_platform)
+This is an [Ansible](http://www.ansible.com) role which ensures single mode init is protected by root password.
 
 ## Usage
 
@@ -45,4 +37,4 @@ This role is distributed in the hope that it will be useful, but WITHOUT ANY WAR
 
 ## Author Information
 
-- José Enrique Mourón Regueira .
+- José Enrique Mourón Regueira
