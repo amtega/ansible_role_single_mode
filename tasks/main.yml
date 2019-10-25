@@ -24,4 +24,4 @@
     - include_tasks: fedora.yml
       when: ansible_facts.distribution | lower in ["fedora"]
   tags:
-    - role::singlemode
+    - role::single_mode
