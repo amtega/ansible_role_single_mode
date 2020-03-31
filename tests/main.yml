@@ -1,7 +1,7 @@
 ---
 # Tasks for testing role
 
-- name: Configure docker sandbox environment
+- name: Configure sandbox environment
   hosts: localhost
   roles:
     - role: amtega.docker_presets
@@ -46,7 +46,7 @@
     - prepare
     - sandbox
 
-- name: Run idempotence test
+- name: Setup testing sandbox
   hosts: localhost
   roles:
     - role: amtega.idempotence_tester
@@ -80,7 +80,7 @@
   tags:
     - idempotence
 
-- name: Cleanup docker sandbox
+- name: Cleanup testing sandbox
   hosts: localhost
   roles:
     - role: amtega.docker_sandbox
