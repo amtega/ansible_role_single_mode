@@ -1,13 +1,4 @@
 ---
-
-- include_role:
-    name: amtega.check_platform
-  vars:
-    check_platform_distributions:
-      centos: 6
-      rhel: 6
-      fedora: 29
-
 # Role tasks
 
 - block:
