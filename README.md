@@ -21,13 +21,13 @@ Tests are based on docker containers. You can setup docker engine quickly using 
 Once you have docker, you can run the tests with the following commands:
 
 ```shell
-$ cd amtega.single_mode/tests
-$ ansible-playbook main.yml
+$ cd amtega.single_mode
+$ molecule test --all
 ```
 
 ## License
 
-Copyright (C) 2019 AMTEGA - Xunta de Galicia
+Copyright (C) 2022 AMTEGA - Xunta de Galicia
 
 This role is free software: you can redistribute it and/or modify it under the terms of:
 
