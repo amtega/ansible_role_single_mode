@@ -29,11 +29,7 @@ rules:
     check-multi-line-strings: no
     level: warning
   key-duplicates: enable
-  line-length:
-    max: 80
-    allow-non-breakable-words: yes
-    allow-non-breakable-inline-mappings: yes
-    level: warning
+  line-length: disable
   new-line-at-end-of-file: disable
   new-lines:
     type: unix

@@ -2,10 +2,10 @@
 
 - name: Verify
   hosts: molecule_hosts
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - name: Check sushell is configured in RHEL and CentOS 6
-      shell: grep --fixed-strings sulogin "{{ item }}"
+      command: grep --fixed-strings sulogin "{{ item }}"
       changed_when: no
       loop:
         - /etc/inittab
@@ -14,8 +14,8 @@
         - ansible_facts.distribution | lower in ["centos", "redhat"]
         - ansible_facts.distribution_major_version is version('6', '==')
 
-    - name: Check sushell is configured in RHEL and CentOS 7
-      shell: grep --fixed-strings sulogin "{{ item }}"
+    - name: Check sushell is configured in RHEL, CentOS 7 & 8 and Fedora
+      command: grep --fixed-strings sulogin "{{ item }}"
       changed_when: no
       loop:
         - /usr/lib/systemd/system/rescue.service
