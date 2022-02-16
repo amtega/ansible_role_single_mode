@@ -3,14 +3,10 @@
 
 - block:
     - include_tasks: el_6.yml
-      when:
-        - ansible_facts.distribution | lower in ["centos", "rehat"]
-        - ansible_facts.distribution_major_version is version('6', '==')
+      when: ansible_facts.distribution_major_version is version('6', '==')
 
     - include_tasks: el_7.yml
-      when:
-        - ansible_facts.distribution | lower in ["centos", "rehat"]
-        - ansible_facts.distribution_major_version is version('7', '==')
+      when: ansible_facts.distribution_major_version is version('7', '==')
 
     - include_tasks: systemd.yml
       when: ansible_facts.distribution_major_version is version('7', '>')
