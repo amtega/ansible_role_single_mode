@@ -10,15 +10,11 @@
       loop:
         - /etc/inittab
         - /etc/sysconfig/init
-      when:
-        - ansible_facts.distribution | lower in ["centos", "redhat"]
-        - ansible_facts.distribution_major_version is version('6', '==')
+      when: ansible_facts.distribution_major_version is version('6', '==')
 
-    - name: Check sushell is configured in RHEL, CentOS 7 & 8 and Fedora
+    - name: Check sushell is configured in RHEL, CentOS and Fedora > 6
       command: grep --fixed-strings sulogin "{{ item }}"
       changed_when: no
       loop:
         - /usr/lib/systemd/system/rescue.service
-      when:
-        - ansible_facts.distribution | lower in ["rhel", "centos", "fedora"]
-        - ansible_facts.distribution_major_version is version('7', '>=')
+      when: ansible_facts.distribution_major_version is version('7', '>=')
