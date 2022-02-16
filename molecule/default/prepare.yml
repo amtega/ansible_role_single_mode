@@ -9,6 +9,4 @@
         path: /usr/lib/systemd/system/rescue.service
         regexp: '^ExecStart'
         line: 'ExecStart=-/bin/sh -c "/usr/sbin/sushell; /usr/bin/systemctl --fail --no-block default"'
-      when:
-        - ansible_facts.distribution | lower in ["rhel", "centos", "fedora"]
-        - ansible_facts.distribution_major_version is version('7', '>=')
+      when: ansible_facts.distribution_major_version is version('7', '>=')
