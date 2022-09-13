@@ -1,14 +1,14 @@
 ---
-# Role tasks
 
-- block:
-    - include_tasks: el_6.yml
+- name: Setup single mode
+  block:
+    - ansible.builtin.include_tasks: el_6.yml
       when: ansible_facts.distribution_major_version is version('6', '==')
 
-    - include_tasks: el_7.yml
+    - ansible.builtin.include_tasks: el_7.yml
       when: ansible_facts.distribution_major_version is version('7', '==')
 
-    - include_tasks: systemd.yml
+    - ansible.builtin.include_tasks: systemd.yml
       when: ansible_facts.distribution_major_version is version('7', '>')
   tags:
     - role::single_mode
