@@ -5,7 +5,7 @@
   gather_facts: yes
   tasks:
     - name: Check sushell is configured in RHEL and CentOS 6
-      command: grep --fixed-strings sulogin "{{ item }}"
+      ansible.builtin.command: grep --fixed-strings sulogin "{{ item }}"
       changed_when: no
       loop:
         - /etc/inittab
@@ -13,7 +13,7 @@
       when: ansible_facts.distribution_major_version is version('6', '==')
 
     - name: Check sushell is configured in RHEL, CentOS and Fedora > 6
-      command: grep --fixed-strings sulogin "{{ item }}"
+      ansible.builtin.command: grep --fixed-strings sulogin "{{ item }}"
       changed_when: no
       loop:
         - /usr/lib/systemd/system/rescue.service

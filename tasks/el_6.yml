@@ -1,16 +1,16 @@
 ---
-# Role tasks for RHEL/Centos 6
 
-- block:
+- name: Setup legacy single mode
+  block:
     - name: Adjust /etc/inittab to require root password in single mode
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/inittab
         line: 'su:S:wait:/sbin/sulogin'
         insertbefore: "^id:3:initdefault:"
         state: present
 
     - name: Adjust /etc/sysconfig/init to require root password in single mode
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/sysconfig/init
         regexp: '^SINGLE='
         line: 'SINGLE=/sbin/sulogin'

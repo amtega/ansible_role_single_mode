@@ -5,8 +5,10 @@
   gather_facts: yes
   tasks:
     - name: Prepare systemd containers with fake sushell entry
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /usr/lib/systemd/system/rescue.service
         regexp: '^ExecStart'
-        line: 'ExecStart=-/bin/sh -c "/usr/sbin/sushell; /usr/bin/systemctl --fail --no-block default"'
+        line: >-
+          ExecStart=-/bin/sh -c
+          "/usr/sbin/sushell; /usr/bin/systemctl --fail --no-block default"
       when: ansible_facts.distribution_major_version is version('7', '>=')
